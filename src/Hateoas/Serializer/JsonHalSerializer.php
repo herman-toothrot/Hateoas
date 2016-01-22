@@ -2,6 +2,7 @@
 
 namespace Hateoas\Serializer;
 
+use Hateoas\Serializer\Metadata\RelationPropertyMetadata;
 use JMS\Serializer\JsonSerializationVisitor;
 use JMS\Serializer\SerializationContext;
 
@@ -44,6 +45,7 @@ class JsonHalSerializer implements JsonSerializerInterface
         $serializedEmbeddeds = array();
         $multiple = array();
         foreach ($embeddeds as $embedded) {
+            $context->pushPropertyMetadata(new RelationPropertyMetadata($embedded->getExclusion()));
             if (!isset($serializedEmbeddeds[$embedded->getRel()])) {
                 $serializedEmbeddeds[$embedded->getRel()] = $context->accept($embedded->getData());
             } elseif (!isset($multiple[$embedded->getRel()])) {
@@ -56,6 +58,7 @@ class JsonHalSerializer implements JsonSerializerInterface
             } else {
                 $serializedEmbeddeds[$embedded->getRel()][] = $context->accept($embedded->getData());
             }
+            $context->popPropertyMetadata();
         }
 
         $visitor->addData('_embedded', $serializedEmbeddeds);
