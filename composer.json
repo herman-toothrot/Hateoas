@@ -1,5 +1,5 @@
 {
-    "name": "willdurand/hateoas",
+    "name": "herman-toothrot/hateoas",
     "description": "A PHP library to support implementing representations for HATEOAS REST web services",
     "license": "MIT",
     "authors": [
